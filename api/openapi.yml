@@ -1,0 +1,67 @@
+openapi: 3.0.3
+info: 
+  title: NIL Transparency API
+  version: 1.0.0
+servers: 
+  - url: /api
+paths:
+  /deals:
+    post:
+      summary: Create NIL deal (mint ContractNFT + register Compliance)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDeal"
+      responses:
+        "201": 
+          description: Created
+  /deals/{dealId}/approve:
+    post:
+      summary: Approve compliance (unblock payouts)
+      parameters: 
+        - name: dealId
+          in: path
+          required: true
+          schema: 
+            type: string
+      responses: 
+        "200": 
+          description: Approved
+  /payouts/{dealId}:
+    post:
+      summary: Execute payout via RevenueSplitter
+      parameters: 
+        - name: dealId
+          in: path
+          required: true
+          schema: 
+            type: string
+      responses: 
+        "200": 
+          description: Payout executed
+components:
+  schemas:
+    CreateDeal:
+      type: object
+      required: [athleteVault, brand, amount, termsHash, splits, jurisdiction]
+      properties:
+        athleteVault: 
+          type: string
+        brand: 
+          type: string
+        amount: 
+          type: string
+          description: "wei"
+        termsHash: 
+          type: string
+        splits:
+          type: array
+          items: 
+            type: integer
+            minimum: 0
+            maximum: 10000
+        jurisdiction: 
+          type: string
+          example: "US-NCAA"
