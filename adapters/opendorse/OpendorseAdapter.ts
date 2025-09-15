@@ -80,7 +80,7 @@ export class OpendorseAdapter extends EventEmitter {
     this.apiKey = config.apiKey;
     this.webhookSecret = config.webhookSecret;
     this.nilContractAddress = config.nilContractAddress;
-    this.provider = config.provider;
+    // this.provider = config.provider; // Currently unused
     this.signer = config.signer;
   }
 
@@ -201,7 +201,7 @@ export class OpendorseAdapter extends EventEmitter {
       );
 
       const receipt = await tx.wait();
-      const dealCreatedEvent = receipt.events?.find(e => e.event === 'NILDealCreated');
+      const dealCreatedEvent = receipt.events?.find((e: any) => e.event === 'NILDealCreated');
       const transparencyDealId = dealCreatedEvent?.args?.dealId;
 
       // Store mapping between Opendorse deal ID and transparency deal ID
@@ -242,7 +242,7 @@ export class OpendorseAdapter extends EventEmitter {
       this.emit('dealProcessed', {
         success: false,
         opendorseDealId: deal.deal_id,
-        error: error.message
+        error: error instanceof Error ? error.message : String(error)
       });
     }
   }

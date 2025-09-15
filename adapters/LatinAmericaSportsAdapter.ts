@@ -257,7 +257,7 @@ export class LatinAmericaSportsAdapter extends UniversalAdapterBase {
     }
 
     // Check forex restrictions
-    if (this.violatesForexRestrictions(deal)) {
+    if (await this.violatesForexRestrictions(deal)) {
       return { approved: false, reason: 'Violates foreign exchange restrictions' };
     }
 
@@ -371,7 +371,7 @@ export class LatinAmericaSportsAdapter extends UniversalAdapterBase {
     };
     
     const threshold = approvalThresholds[deal.jurisdiction];
-    return threshold && deal.amount >= threshold;
+    return Boolean(threshold) && deal.amount >= (threshold || 0);
   }
 
   private async submitRegulatoryApproval(deal_id: string, deal: UniversalNILDeal): Promise<void> {
@@ -411,14 +411,12 @@ export class LatinAmericaSportsAdapter extends UniversalAdapterBase {
     return this.convertCurrency(currency, 'USD', amount, '').then(r => r.converted_amount);
   }
 
-  private violatesForexRestrictions(deal: UniversalNILDeal): boolean {
-    const banking = this.getBankingCompliance(deal.jurisdiction);
-    return banking.then((rules: any) => {
-      if (rules.forex_restrictions && deal.currency === 'USD') {
-        return deal.amount > rules.max_remittance_usd;
-      }
-      return false;
-    });
+  private async violatesForexRestrictions(deal: UniversalNILDeal): Promise<boolean> {
+    const banking = await this.getBankingCompliance(deal.jurisdiction);
+    if (banking.forex_restrictions && deal.currency === 'USD') {
+      return deal.amount > banking.max_remittance_usd;
+    }
+    return false;
   }
 
   private async checkLocalTaxCompliance(_deal: UniversalNILDeal): Promise<{ compliant: boolean }> {

@@ -114,7 +114,7 @@ export class INFLCRAdapter extends EventEmitter {
     this.apiKey = config.apiKey;
     this.nilContractAddress = config.nilContractAddress;
     this.rewardContractAddress = config.rewardContractAddress;
-    this.provider = config.provider;
+    // this.provider = config.provider; // Currently unused
     this.signer = config.signer;
   }
 

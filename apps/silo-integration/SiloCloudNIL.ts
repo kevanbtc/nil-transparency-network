@@ -110,7 +110,7 @@ export class SiloCloudNIL {
       const tx = await vaultFactory.deployVault(profile.id, profile.name);
       const receipt = await tx.wait();
       
-      const vaultAddress = receipt.events?.find(e => e.event === 'VaultDeployed')?.args?.vault;
+      const vaultAddress = receipt.events?.find((e: any) => e.event === 'VaultDeployed')?.args?.vault;
       
       // Register in SiloCloud
       await this._apiCall('POST', '/athletes/register', {
@@ -284,7 +284,7 @@ export class SiloCloudNIL {
     );
 
     const receipt = await tx.wait();
-    const dealId = receipt.events?.find(e => e.event === 'NILDealCreated')?.args?.dealId;
+    const dealId = receipt.events?.find((e: any) => e.event === 'NILDealCreated')?.args?.dealId;
 
     // Store in SiloCloud database
     await this._apiCall('POST', '/deals/create', {

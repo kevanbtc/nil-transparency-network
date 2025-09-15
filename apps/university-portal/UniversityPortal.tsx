@@ -14,7 +14,7 @@ import {
   Tabs, 
   TabsContent, 
   TabsList, 
-  TabsToken 
+  TabsTrigger
 } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -439,11 +439,11 @@ export const UniversityPortal: React.FC = () => {
       
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList>
-          <TabsToken value="dashboard">Dashboard</TabsToken>
-          <TabsToken value="athletes">Athletes</TabsToken>
-          <TabsToken value="activity">NIL Activity</TabsToken>
-          <TabsToken value="compliance">Compliance</TabsToken>
-          <TabsToken value="reports">Reports</TabsToken>
+          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+          <TabsTrigger value="athletes">Athletes</TabsTrigger>
+          <TabsTrigger value="activity">NIL Activity</TabsTrigger>
+          <TabsTrigger value="compliance">Compliance</TabsTrigger>
+          <TabsTrigger value="reports">Reports</TabsTrigger>
         </TabsList>
         
         <TabsContent value="dashboard" className="space-y-4">

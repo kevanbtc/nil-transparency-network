@@ -14,7 +14,7 @@ import {
   Tabs, 
   TabsContent, 
   TabsList, 
-  TabsToken 
+  TabsTrigger
 } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -379,11 +379,11 @@ export const AthleteDashboard: React.FC = () => {
       
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList>
-          <TabsToken value="overview">Overview</TabsToken>
-          <TabsToken value="deals">NIL Deals</TabsToken>
-          <TabsToken value="content">Content & Engagement</TabsToken>
-          <TabsToken value="compliance">Compliance</TabsToken>
-          <TabsToken value="transactions">Transactions</TabsToken>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="deals">NIL Deals</TabsTrigger>
+          <TabsTrigger value="content">Content & Engagement</TabsTrigger>
+          <TabsTrigger value="compliance">Compliance</TabsTrigger>
+          <TabsTrigger value="transactions">Transactions</TabsTrigger>
         </TabsList>
         
         <TabsContent value="overview" className="space-y-4">
