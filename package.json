@@ -1,0 +1,54 @@
+{
+  "name": "nil-transparency-network",
+  "version": "1.0.0",
+  "description": "SiloCloud NIL Transparency Network - Universal infrastructure for Name, Image, Likeness monetization",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "jest",
+    "deploy:contracts": "hardhat deploy",
+    "start:adapters": "node dist/adapters/index.js",
+    "start:dashboards": "concurrently \"npm run dev:athlete\" \"npm run dev:university\" \"npm run dev:brand\"",
+    "dev:athlete": "cd apps/athlete-dashboard && npm run dev",
+    "dev:university": "cd apps/university-portal && npm run dev", 
+    "dev:brand": "cd apps/brand-analytics && npm run dev"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "next": "^14.0.0",
+    "typescript": "^5.0.0",
+    "ethers": "^6.8.0",
+    "axios": "^1.5.0",
+    "@openzeppelin/contracts": "^5.0.0",
+    "tailwindcss": "^3.3.0",
+    "hardhat": "^2.17.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/node": "^20.0.0",
+    "jest": "^29.7.0",
+    "concurrently": "^8.2.0",
+    "eslint": "^8.50.0",
+    "eslint-config-next": "^14.0.0"
+  },
+  "keywords": [
+    "NIL",
+    "blockchain",
+    "transparency",
+    "compliance",
+    "SiloCloud",
+    "athlete",
+    "university",
+    "brand",
+    "ethereum"
+  ],
+  "author": "SiloCloud Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kevanbtc/nil-transparency-network.git"
+  }
+}
