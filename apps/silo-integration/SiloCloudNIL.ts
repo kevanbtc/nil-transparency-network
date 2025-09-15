@@ -72,11 +72,9 @@ export interface SiloTransaction {
 
 // Main SiloCloud NIL Integration Class
 export class SiloCloudNIL {
-  private provider: ethers.Provider;
   private signer: ethers.Signer;
   private nilVaultAddress: string;
   private contractNFTAddress: string;
-  private complianceRegistryAddress: string;
   private apiBaseUrl: string;
   private apiKey: string;
 
@@ -93,11 +91,9 @@ export class SiloCloudNIL {
       apiKey: string;
     };
   }) {
-    this.provider = config.provider;
     this.signer = config.signer;
     this.nilVaultAddress = config.contractAddresses.nilVault;
     this.contractNFTAddress = config.contractAddresses.contractNFT;
-    this.complianceRegistryAddress = config.contractAddresses.complianceRegistry;
     this.apiBaseUrl = config.siloCloudConfig.apiBaseUrl;
     this.apiKey = config.siloCloudConfig.apiKey;
   }
@@ -109,13 +105,14 @@ export class SiloCloudNIL {
       const vaultFactory = new Contract(this.nilVaultAddress, NIL_VAULT_ABI, this.signer);
       const tx = await vaultFactory.deployVault(profile.id, profile.name);
       const receipt = await tx.wait();
-      
-      const vaultAddress = receipt.events?.find(e => e.event === 'VaultDeployed')?.args?.vault;
-      
+
+      const vaultAddress = receipt.events?.find((e: any) => e.event === 'VaultDeployed')?.args
+        ?.vault;
+
       // Register in SiloCloud
       await this._apiCall('POST', '/athletes/register', {
         ...profile,
-        vault_address: vaultAddress
+        vault_address: vaultAddress,
       });
 
       // Setup athlete domain
@@ -128,7 +125,9 @@ export class SiloCloudNIL {
     }
   }
 
-  async getAthleteVault(athlete_id: string): Promise<{ address: string; balance: string; deals: NILDeal[] }> {
+  async getAthleteVault(
+    athlete_id: string
+  ): Promise<{ address: string; balance: string; deals: NILDeal[] }> {
     const response = await this._apiCall('GET', `/athletes/${athlete_id}/vault`);
     return response.data;
   }
@@ -138,14 +137,17 @@ export class SiloCloudNIL {
   }
 
   // Content Monetization
-  async startLiveStream(athlete_id: string, streamConfig: StreamConfig): Promise<{
+  async startLiveStream(
+    athlete_id: string,
+    streamConfig: StreamConfig
+  ): Promise<{
     stream_id: string;
     stream_url: string;
     rtmp_key: string;
   }> {
     const streamData = await this._apiCall('POST', '/content/streams/start', {
       athlete_id,
-      ...streamConfig
+      ...streamConfig,
     });
 
     // Enable NIL token tipping for the stream
@@ -166,11 +168,11 @@ export class SiloCloudNIL {
   }): Promise<SiloTransaction> {
     // Convert fiat/crypto to NIL tokens
     const nilTokens = await this._convertToNILTokens(tip.amount, tip.currency, tip.to_athlete);
-    
+
     // Process tip through SiloBank
     const transaction = await this._apiCall('POST', '/payments/process-tip', {
       ...tip,
-      nil_tokens: nilTokens
+      nil_tokens: nilTokens,
     });
 
     // Send tokens to athlete vault
@@ -179,21 +181,24 @@ export class SiloCloudNIL {
     return transaction;
   }
 
-  async createMerchDrop(athlete_id: string, merchData: {
-    items: Array<{
-      name: string;
-      description: string;
-      price: number;
-      currency: string;
-      inventory: number;
-      images: string[];
-    }>;
-    drop_date?: Date;
-    exclusive_access?: 'all' | 'subscribers' | 'top_fans';
-  }): Promise<string> {
+  async createMerchDrop(
+    athlete_id: string,
+    merchData: {
+      items: Array<{
+        name: string;
+        description: string;
+        price: number;
+        currency: string;
+        inventory: number;
+        images: string[];
+      }>;
+      drop_date?: Date;
+      exclusive_access?: 'all' | 'subscribers' | 'top_fans';
+    }
+  ): Promise<string> {
     const drop = await this._apiCall('POST', '/marketplace/merch/create', {
       athlete_id,
-      ...merchData
+      ...merchData,
     });
 
     // Enable NIL token payments for merch
@@ -202,18 +207,21 @@ export class SiloCloudNIL {
     return drop.drop_id;
   }
 
-  async mintAthleteNFT(athlete_id: string, nftData: {
-    name: string;
-    description: string;
-    image: string;
-    attributes: Array<{ trait_type: string; value: string }>;
-    supply: number;
-    price: number;
-    currency: string;
-  }): Promise<string> {
+  async mintAthleteNFT(
+    athlete_id: string,
+    nftData: {
+      name: string;
+      description: string;
+      image: string;
+      attributes: Array<{ trait_type: string; value: string }>;
+      supply: number;
+      price: number;
+      currency: string;
+    }
+  ): Promise<string> {
     const nft = await this._apiCall('POST', '/nft/mint', {
       athlete_id,
-      ...nftData
+      ...nftData,
     });
 
     // Create on-chain NFT record
@@ -224,7 +232,11 @@ export class SiloCloudNIL {
   }
 
   // Fan Engagement
-  async subscribeToAthlete(user_id: string, athlete_id: string, tier: 'basic' | 'premium' | 'vip'): Promise<{
+  async subscribeToAthlete(
+    user_id: string,
+    athlete_id: string,
+    tier: 'basic' | 'premium' | 'vip'
+  ): Promise<{
     subscription_id: string;
     cost: number;
     benefits: string[];
@@ -233,16 +245,23 @@ export class SiloCloudNIL {
     const subscription = await this._apiCall('POST', '/subscriptions/create', {
       user_id,
       athlete_id,
-      tier
+      tier,
     });
 
     // Process payment in NIL tokens
-    await this._processSubscriptionPayment(subscription.subscription_id, subscription.cost, athlete_id);
+    await this._processSubscriptionPayment(
+      subscription.subscription_id,
+      subscription.cost,
+      athlete_id
+    );
 
     return subscription;
   }
 
-  async getFanEngagementMetrics(athlete_id: string, period: '7d' | '30d' | '90d'): Promise<{
+  async getFanEngagementMetrics(
+    athlete_id: string,
+    period: '7d' | '30d' | '90d'
+  ): Promise<{
     total_tips: number;
     stream_hours: number;
     merch_sales: number;
@@ -273,59 +292,65 @@ export class SiloCloudNIL {
         dealData.revenue_splits.athlete * 100, // Convert to basis points
         dealData.revenue_splits.school * 100,
         dealData.revenue_splits.collective * 100,
-        dealData.revenue_splits.platform * 100
+        dealData.revenue_splits.platform * 100,
       ],
       [
         await this._getAthleteAddress(dealData.athlete_id),
         await this._getSchoolAddress(dealData.athlete_id),
         await this._getCollectiveAddress(dealData.athlete_id),
-        this.apiBaseUrl // Platform address
+        this.apiBaseUrl, // Platform address
       ]
     );
 
     const receipt = await tx.wait();
-    const dealId = receipt.events?.find(e => e.event === 'NILDealCreated')?.args?.dealId;
+    const dealId = receipt.events?.find((e: any) => e.event === 'NILDealCreated')?.args?.dealId;
 
     // Store in SiloCloud database
     await this._apiCall('POST', '/deals/create', {
       deal_id: dealId,
       ...dealData,
-      platform_source: 'silo'
+      platform_source: 'silo',
     });
 
     return dealId;
   }
 
   // Compliance & Reporting
-  async generateComplianceReport(athlete_id: string, options: {
-    period: { start: Date; end: Date };
-    report_type: 'kyc' | 'transactions' | 'deals' | 'comprehensive';
-    format: 'json' | 'pdf' | 'csv';
-  }): Promise<{
+  async generateComplianceReport(
+    athlete_id: string,
+    options: {
+      period: { start: Date; end: Date };
+      report_type: 'kyc' | 'transactions' | 'deals' | 'comprehensive';
+      format: 'json' | 'pdf' | 'csv';
+    }
+  ): Promise<{
     report_id: string;
     download_url: string;
     generated_at: Date;
   }> {
     return this._apiCall('POST', '/compliance/reports/generate', {
       athlete_id,
-      ...options
+      ...options,
     });
   }
 
-  async getTransactionHistory(vault_address: string, filters?: {
-    type?: SiloTransaction['type'];
-    start_date?: Date;
-    end_date?: Date;
-    min_amount?: number;
-    max_amount?: number;
-  }): Promise<SiloTransaction[]> {
+  async getTransactionHistory(
+    vault_address: string,
+    filters?: {
+      type?: SiloTransaction['type'];
+      start_date?: Date;
+      end_date?: Date;
+      min_amount?: number;
+      max_amount?: number;
+    }
+  ): Promise<SiloTransaction[]> {
     const params = new URLSearchParams();
     if (filters) {
       Object.entries(filters).forEach(([key, value]) => {
         if (value) params.append(key, value.toString());
       });
     }
-    
+
     const response = await this._apiCall('GET', `/transactions/${vault_address}?${params}`);
     return response.data;
   }
@@ -334,7 +359,7 @@ export class SiloCloudNIL {
   async integrateOpendorse(webhook_url: string): Promise<void> {
     await this._apiCall('POST', '/integrations/opendorse/setup', {
       webhook_url,
-      events: ['deal.created', 'deal.updated', 'deal.completed']
+      events: ['deal.created', 'deal.updated', 'deal.completed'],
     });
   }
 
@@ -342,14 +367,14 @@ export class SiloCloudNIL {
     await this._apiCall('POST', '/integrations/inflcr/setup', {
       api_key,
       sync_content: true,
-      track_engagement: true
+      track_engagement: true,
     });
   }
 
   async integrateBasepath(collective_id: string): Promise<void> {
     await this._apiCall('POST', '/integrations/basepath/setup', {
       collective_id,
-      auto_distribute: true
+      auto_distribute: true,
     });
   }
 
@@ -361,9 +386,9 @@ export class SiloCloudNIL {
         url: `${this.apiBaseUrl}${endpoint}`,
         data,
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
+        },
       });
       return response.data;
     } catch (error) {
@@ -372,7 +397,11 @@ export class SiloCloudNIL {
     }
   }
 
-  private async _convertToNILTokens(amount: number, currency: string, athlete_id: string): Promise<number> {
+  private async _convertToNILTokens(
+    amount: number,
+    currency: string,
+    athlete_id: string
+  ): Promise<number> {
     // Get current NIL token rate for this athlete
     const rate = await this._apiCall('GET', `/rates/nil-tokens/${athlete_id}?currency=${currency}`);
     return amount * rate.conversion_rate;
@@ -384,7 +413,10 @@ export class SiloCloudNIL {
     await nilToken.transfer(vaultAddress, ethers.parseEther(nil_tokens.toString()));
   }
 
-  private async _enableStreamTipping(stream_id: string, monetization: StreamConfig['monetization']): Promise<void> {
+  private async _enableStreamTipping(
+    stream_id: string,
+    monetization: StreamConfig['monetization']
+  ): Promise<void> {
     await this._apiCall('POST', `/streams/${stream_id}/monetization`, monetization);
   }
 
@@ -392,18 +424,22 @@ export class SiloCloudNIL {
     await this._apiCall('POST', `/marketplace/items/${item_id}/payment-methods`, {
       nil_tokens: true,
       fiat: true,
-      crypto: true
+      crypto: true,
     });
   }
 
-  private async _processSubscriptionPayment(subscription_id: string, cost: number, athlete_id: string): Promise<void> {
+  private async _processSubscriptionPayment(
+    subscription_id: string,
+    cost: number,
+    athlete_id: string
+  ): Promise<void> {
     const nilTokens = await this._convertToNILTokens(cost, 'USD', athlete_id);
     await this._sendToVault(athlete_id, nilTokens);
-    
+
     await this._apiCall('PUT', `/subscriptions/${subscription_id}/payment`, {
       amount: cost,
       nil_tokens: nilTokens,
-      status: 'completed'
+      status: 'completed',
     });
   }
 
@@ -412,7 +448,7 @@ export class SiloCloudNIL {
     await this._apiCall('POST', '/domains/nil/register', {
       subdomain,
       vault_address,
-      type: 'athlete'
+      type: 'athlete',
     });
   }
 
@@ -444,25 +480,25 @@ export class SiloCloudNIL {
 
 // Contract ABIs (simplified)
 const NIL_VAULT_ABI = [
-  "function createNILDeal(address brand, uint256 amount, string deliverables, string termsIPFS, uint256[] splits, address[] beneficiaries) returns (bytes32)",
-  "function executeNILDeal(bytes32 dealId)",
-  "function getDeal(bytes32 dealId) view returns (tuple)",
-  "event NILDealCreated(bytes32 indexed dealId, address indexed athlete, address indexed brand, uint256 amount, string deliverables)"
+  'function createNILDeal(address brand, uint256 amount, string deliverables, string termsIPFS, uint256[] splits, address[] beneficiaries) returns (bytes32)',
+  'function executeNILDeal(bytes32 dealId)',
+  'function getDeal(bytes32 dealId) view returns (tuple)',
+  'event NILDealCreated(bytes32 indexed dealId, address indexed athlete, address indexed brand, uint256 amount, string deliverables)',
 ];
 
 const CONTRACT_NFT_ABI = [
-  "function mintContract(address athleteVault, address brand, uint256 amount, string deliverables, string termsIPFS, string jurisdiction, string platformSource, uint256[] splits, address[] beneficiaries) returns (uint256)",
-  "function getContract(uint256 tokenId) view returns (tuple)",
-  "event ContractMinted(uint256 indexed tokenId, address indexed athleteVault, address indexed brand, uint256 amount, string platformSource)"
+  'function mintContract(address athleteVault, address brand, uint256 amount, string deliverables, string termsIPFS, string jurisdiction, string platformSource, uint256[] splits, address[] beneficiaries) returns (uint256)',
+  'function getContract(uint256 tokenId) view returns (tuple)',
+  'event ContractMinted(uint256 indexed tokenId, address indexed athleteVault, address indexed brand, uint256 amount, string platformSource)',
 ];
 
 const NIL_TOKEN_ABI = [
-  "function transfer(address to, uint256 amount) returns (bool)",
-  "function balanceOf(address account) view returns (uint256)",
-  "function allowance(address owner, address spender) view returns (uint256)"
+  'function transfer(address to, uint256 amount) returns (bool)',
+  'function balanceOf(address account) view returns (uint256)',
+  'function allowance(address owner, address spender) view returns (uint256)',
 ];
 
 // Constants
-const NIL_TOKEN_ADDRESS = "0x..."; // Deployed NIL token address
+const NIL_TOKEN_ADDRESS = '0x...'; // Deployed NIL token address
 
 export default SiloCloudNIL;

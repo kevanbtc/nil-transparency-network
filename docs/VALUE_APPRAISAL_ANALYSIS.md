@@ -3,7 +3,7 @@
 **Valuation Date:** September 7, 2025  
 **Appraisal Method:** DCF, Market Multiples, Asset-Based, Strategic Value  
 **Classification:** Strategic Partnership Investment Analysis  
-**Prepared For:** SiloCloud × Niotavonne × Unykorn Partnership  
+**Prepared For:** SiloCloud × Niotavonne × Unykorn Partnership
 
 ---
 
@@ -11,7 +11,7 @@
 
 **Enterprise Value Range:** $150M - $350M (Current Stage)  
 **5-Year Projected Value:** $800M - $1.2B  
-**Strategic Partnership Value:** $1.5B - $2.5B (Full Integration)  
+**Strategic Partnership Value:** $1.5B - $2.5B (Full Integration)
 
 **Investment Thesis:** The NIL Transparency Network represents a transformational infrastructure play positioned to capture significant value from the rapidly expanding $1.67B NIL market through universal platform adoption and regulatory compliance automation.
 
@@ -22,12 +22,13 @@
 ### Revenue Projections & Growth Model
 
 #### Core Revenue Streams
+
 ```
 💵 Revenue Stream Analysis (5-Year DCF Model):
 
 Transaction Fees (Primary Revenue - 65% of total):
 ├── Year 1: $1.40M (2.5% of $56M transaction volume)
-├── Year 2: $5.07M (2.5% of $203M transaction volume)  
+├── Year 2: $5.07M (2.5% of $203M transaction volume)
 ├── Year 3: $14.04M (2.5% of $562M transaction volume)
 ├── Year 4: $31.59M (2.5% of $1.26B transaction volume)
 └── Year 5: $58.15M (2.5% of $2.33B transaction volume)
@@ -37,7 +38,7 @@ SaaS Licensing (Secondary Revenue - 25% of total):
 ├── Year 1: $0.54M (25 universities × $199/mo + athletes)
 ├── Year 2: $1.95M (75 universities + 5,000 athletes)
 ├── Year 3: $5.40M (150 universities + 15,000 athletes)
-├── Year 4: $12.15M (300 universities + 35,000 athletes)  
+├── Year 4: $12.15M (300 universities + 35,000 athletes)
 └── Year 5: $22.35M (500 universities + 65,000 athletes)
 5-Year Total: $42.39M
 
@@ -61,12 +62,13 @@ TOTAL REVENUE PROJECTION: $169.28M over 5 years
 ```
 
 #### Cost Structure Analysis
+
 ```
 💸 Operating Cost Breakdown:
 
 Technology & Infrastructure (35% of revenue):
 ├── AWS/Cloud Infrastructure:        $4.2M annually by Year 5
-├── Blockchain Gas & Fees:          $2.8M annually by Year 5  
+├── Blockchain Gas & Fees:          $2.8M annually by Year 5
 ├── Third-Party Integrations:       $3.1M annually by Year 5
 ├── Security & Monitoring:          $1.9M annually by Year 5
 └── Technology Licensing:           $2.2M annually by Year 5
@@ -75,7 +77,7 @@ Annual by Year 5: $14.2M
 Personnel & Operations (45% of revenue):
 ├── Engineering Team (25 people):    $8.5M annually by Year 5
 ├── Compliance Team (15 people):     $4.2M annually by Year 5
-├── Operations Team (12 people):     $3.8M annually by Year 5  
+├── Operations Team (12 people):     $3.8M annually by Year 5
 ├── Business Development (10 people): $3.5M annually by Year 5
 └── Executive Team (8 people):       $4.8M annually by Year 5
 Annual by Year 5: $24.8M
@@ -100,6 +102,7 @@ TOTAL OPERATING COSTS by Year 5: $54.9M (61.5% of revenue)
 ```
 
 #### DCF Valuation Calculation
+
 ```
 📈 DCF Model Results:
 
@@ -120,7 +123,7 @@ Terminal Value Calculation:
 
 Present Value Calculation:
 ├── PV of Year 1-5 Cash Flows: $42.8M
-├── PV of Terminal Value: $292.1M  
+├── PV of Terminal Value: $292.1M
 ├── Total Enterprise Value: $334.9M
 ├── Less: Net Debt: $0M
 └── Equity Value: $334.9M
@@ -135,6 +138,7 @@ DCF ENTERPRISE VALUE: $335M
 ### Comparable Company Analysis
 
 #### Public Company Comparables
+
 ```
 📊 Public Market Multiples:
 
@@ -145,7 +149,7 @@ Fintech Infrastructure Companies:
 │   ├── Revenue (TTM): $6.2B
 │   └── Growth Rate: 38%
 ├── Adyen (Payment Platform):
-│   ├── Revenue Multiple: 18.7x  
+│   ├── Revenue Multiple: 18.7x
 │   ├── Enterprise Value: $52B
 │   ├── Revenue (TTM): $2.8B
 │   └── Growth Rate: 42%
@@ -195,17 +199,18 @@ Market Multiple Valuation: $21.6M × 14.4x = $311M
 ```
 
 #### Private Market Transactions
+
 ```
 💼 Private Market Comparables:
 
 Sports Technology M&A:
 ├── Genius Sports (IPO 2021): $1.5B valuation, 18x revenue
-├── Sportradar (IPO 2021): $8B valuation, 12x revenue  
+├── Sportradar (IPO 2021): $8B valuation, 12x revenue
 ├── Hudl (Vista Equity 2021): $1.2B valuation, 15x revenue
 ├── TeamSnap (Hark Capital 2021): $500M valuation, 8x revenue
 └── LeagueApps (Vista Equity 2020): $200M valuation, 10x revenue
 
-Fintech Infrastructure M&A:  
+Fintech Infrastructure M&A:
 ├── Plaid (Visa attempted 2020): $5.3B, 25x revenue
 ├── Currencycloud (Visa 2021): $963M, 12x revenue
 ├── Tink (Visa 2021): $2.15B, 18x revenue
@@ -222,12 +227,13 @@ Target Private Market Value: $346M - $475M
 ## 🏗️ Asset-Based Valuation
 
 ### Intellectual Property Assessment
+
 ```
 🧠 IP Portfolio Valuation:
 
 Smart Contract Architecture:
 ├── Core Contract Suite (3 contracts):    $15M
-├── Compliance Automation Framework:      $25M  
+├── Compliance Automation Framework:      $25M
 ├── Integration API Architecture:         $12M
 ├── Security & Audit Framework:          $8M
 └── Governance & Upgrade Systems:        $5M
@@ -236,7 +242,7 @@ Total Smart Contract IP: $65M
 Software & Platform Assets:
 ├── SiloCloud Integration Layer:          $18M
 ├── Universal Platform Adapters:         $22M
-├── Analytics & Reporting Engine:        $15M  
+├── Analytics & Reporting Engine:        $15M
 ├── Mobile Applications:                 $8M
 ├── Admin & Management Dashboards:       $6M
 └── API Gateway & Security:              $9M
@@ -263,10 +269,11 @@ TOTAL ASSET-BASED VALUE: $403M
 ```
 
 ### Technology Infrastructure Value
+
 ```
 🖥️ Infrastructure Asset Valuation:
 
-Cloud Infrastructure:  
+Cloud Infrastructure:
 ├── AWS Architecture Design:             $5M
 ├── Multi-Region Deployment:            $3M
 ├── Security Infrastructure:            $8M
@@ -300,6 +307,7 @@ Combined with IP Assets: $507M
 ## 🎯 Strategic Value Analysis
 
 ### Partnership Synergy Valuation
+
 ```
 🤝 Partnership Value Creation:
 
@@ -344,6 +352,7 @@ Combined Enterprise + Strategic Value: $1.22B
 ```
 
 ### Market Position & Competitive Advantage
+
 ```
 🏆 Competitive Advantage Valuation:
 
@@ -388,6 +397,7 @@ TOTAL COMPETITIVE ADVANTAGE VALUE: $1.77B
 ## 📈 Scenario Analysis & Valuation Range
 
 ### Base Case Scenario (60% Probability)
+
 ```
 📊 Base Case Valuation:
 
@@ -416,12 +426,13 @@ BASE CASE ENTERPRISE VALUE: $485M
 ```
 
 ### Bull Case Scenario (25% Probability)
+
 ```
 🚀 Bull Case Valuation:
 
 Market Assumptions:
 ├── NIL Market Growth: 50% CAGR (regulatory expansion)
-├── Platform Dominance: 45% market share by Year 5  
+├── Platform Dominance: 45% market share by Year 5
 ├── University Penetration: 75% of all NCAA schools
 ├── International Success: 5+ countries by Year 7
 ├── Adjacent Market Entry: High school, international sports
@@ -444,6 +455,7 @@ BULL CASE ENTERPRISE VALUE: $1.35B
 ```
 
 ### Bear Case Scenario (15% Probability)
+
 ```
 ⚠️ Bear Case Valuation:
 
@@ -458,7 +470,7 @@ Market Challenges:
 Financial Impact:
 ├── 5-Year Revenue: $98M (42% below base)
 ├── Market Share: 15% of transaction volume
-├── Profit Margins: 25% by Year 5 (cost pressures)  
+├── Profit Margins: 25% by Year 5 (cost pressures)
 ├── Growth Rate: 25% CAGR Years 1-5
 └── Terminal Growth: 2%
 
@@ -476,12 +488,13 @@ BEAR CASE ENTERPRISE VALUE: $195M
 ## 💎 Final Valuation Summary
 
 ### Weighted Valuation Analysis
+
 ```
 🎯 Probability-Weighted Valuation:
 
 Scenario Weighting:
 ├── Bull Case (25% probability): $1.35B × 0.25 = $337.5M
-├── Base Case (60% probability): $485M × 0.60 = $291.0M  
+├── Base Case (60% probability): $485M × 0.60 = $291.0M
 ├── Bear Case (15% probability): $195M × 0.15 = $29.25M
 └── Total Weighted Value: $657.75M
 
@@ -497,6 +510,7 @@ MIDPOINT ENTERPRISE VALUE: $645M
 ```
 
 ### Valuation by Methodology Summary
+
 ```
 📊 Valuation Method Comparison:
 
@@ -511,7 +525,7 @@ Target Partnership Value:       $645M
 
 Per Partnership Stake:
 ├── SiloCloud (40%):           $258M value
-├── Niotavonne (30%):         $194M value  
+├── Niotavonne (30%):         $194M value
 ├── Unykorn (30%):            $194M value
 └── Total Equity Value:       $646M
 ```
@@ -525,6 +539,7 @@ Per Partnership Stake:
 **The NIL Transparency Network represents a compelling infrastructure investment opportunity with multiple value creation vectors and strong defensive characteristics.**
 
 #### Key Investment Highlights:
+
 1. **Market Timing:** Early stage capture of $1.67B+ growing NIL market
 2. **Competitive Position:** First-mover advantage in universal NIL infrastructure
 3. **Revenue Model:** Diversified, high-margin, scalable revenue streams
@@ -533,12 +548,14 @@ Per Partnership Stake:
 6. **Technology Leadership:** Advanced blockchain infrastructure with proven scalability
 
 #### Risk-Adjusted Returns:
+
 - **Expected IRR:** 45-65% over 5 years
 - **Multiple of Invested Capital:** 8-15x potential return
 - **Probability of Success:** 75% (base case or better)
 - **Downside Protection:** Strong asset base and strategic partnerships
 
 #### Recommended Investment Structure:
+
 - **Partnership Formation:** Immediate (Q4 2025)
 - **Capital Requirements:** $15M initial deployment capital
 - **Equity Distribution:** SiloCloud 40%, Niotavonne 30%, Unykorn 30%
@@ -549,13 +566,13 @@ Per Partnership Stake:
 
 **Enterprise Valuation: $645M**  
 **Investment Grade: A+ (Highly Recommended)**  
-**Strategic Fit: Exceptional**  
+**Strategic Fit: Exceptional**
 
 The NIL Transparency Network represents a transformational opportunity to establish market-leading position in the rapidly expanding NIL ecosystem while generating substantial returns through both operational performance and strategic value creation.
 
 ---
 
-*Valuation prepared by Unykorn Financial Analysis Team*  
-*Date: September 7, 2025*  
-*Confidence Level: 94%*  
-*Next Review: December 7, 2025*
+_Valuation prepared by Unykorn Financial Analysis Team_  
+_Date: September 7, 2025_  
+_Confidence Level: 94%_  
+_Next Review: December 7, 2025_

@@ -3,7 +3,7 @@
 **Architecture Version:** 2.0  
 **Last Updated:** September 7, 2025  
 **Classification:** Technical Infrastructure Specification  
-**Target Audience:** Technical Teams, Infrastructure Engineers, DevOps  
+**Target Audience:** Technical Teams, Infrastructure Engineers, DevOps
 
 ---
 
@@ -22,7 +22,7 @@ graph TB
         D[Fans] --> G
         E[Platforms] --> F[Platform APIs]
     end
-    
+
     subgraph "API Gateway Layer"
         G --> H[AWS API Gateway]
         F --> H
@@ -30,13 +30,13 @@ graph TB
         H --> J[Rate Limiting]
         H --> K[Load Balancer]
     end
-    
+
     subgraph "Application Layer"
         K --> L[NIL Management Service]
         K --> M[Compliance Service]
         K --> N[Analytics Service]
         K --> O[Integration Service]
-        
+
         L --> P[Athlete Vault Manager]
         L --> Q[Deal Processing Engine]
         M --> R[KYC/AML Engine]
@@ -44,26 +44,26 @@ graph TB
         N --> T[Real-time Analytics]
         O --> U[Platform Adapters]
     end
-    
+
     subgraph "Data Layer"
         P --> V[(PostgreSQL)]
         Q --> V
         R --> W[(Redis Cache)]
         S --> X[(Time Series DB)]
         T --> Y[(Data Warehouse)]
-        
+
         V --> Z[Backup Service]
         W --> Z
         X --> Z
         Y --> Z
     end
-    
+
     subgraph "Blockchain Layer"
         L --> AA[Smart Contract Layer]
         AA --> BB[NIL Vault Contracts]
         AA --> CC[Contract NFTs]
         AA --> DD[Compliance Registry]
-        
+
         BB --> EE[Ethereum Mainnet]
         CC --> EE
         DD --> EE
@@ -71,7 +71,7 @@ graph TB
         CC --> FF
         DD --> FF
     end
-    
+
     subgraph "External Integrations"
         O --> GG[Opendorse API]
         O --> HH[INFLCR API]
@@ -79,18 +79,18 @@ graph TB
         R --> JJ[Chainalysis]
         R --> KK[Jumio KYC]
     end
-    
+
     subgraph "Infrastructure Layer"
         V --> LL[AWS RDS Aurora]
         W --> MM[AWS ElastiCache]
         X --> NN[AWS Timestream]
         Y --> OO[AWS Redshift]
-        
+
         L --> PP[AWS EKS]
         M --> PP
         N --> PP
         O --> PP
-        
+
         PP --> QQ[Auto Scaling Groups]
         PP --> RR[Service Mesh]
     end
@@ -103,6 +103,7 @@ graph TB
 ### AWS Multi-Region Deployment
 
 #### Primary Region: US-East-1 (Virginia)
+
 ```yaml
 Production Environment:
   Compute:
@@ -110,20 +111,20 @@ Production Environment:
     - Instance Types: m5.xlarge (general), c5.2xlarge (compute)
     - Auto Scaling: Target tracking (70% CPU, 80% memory)
     - Spot Instances: 40% for cost optimization
-    
+
   Storage:
     - RDS Aurora PostgreSQL: Multi-AZ, 3 read replicas
     - ElastiCache Redis: Cluster mode, 6 nodes
     - S3 Buckets: Standard, IA, Glacier tiers
     - EBS: GP3 volumes, 3000 IOPS baseline
-    
+
   Networking:
     - VPC: 10.0.0.0/16 CIDR block
     - Private Subnets: 3 AZs, /24 each
     - Public Subnets: 3 AZs, /28 each
     - NAT Gateways: 3 (one per AZ)
     - Internet Gateway: Single IGW
-    
+
   Security:
     - Security Groups: Least privilege principle
     - NACLs: Additional layer protection
@@ -133,6 +134,7 @@ Production Environment:
 ```
 
 #### Secondary Region: US-West-2 (Oregon)
+
 ```yaml
 Disaster Recovery Environment:
   Purpose: Hot standby for RTO < 4 hours
@@ -143,6 +145,7 @@ Disaster Recovery Environment:
 ```
 
 #### International Region: EU-West-1 (Ireland)
+
 ```yaml
 European Operations:
   Compliance: GDPR-compliant data processing
@@ -154,6 +157,7 @@ European Operations:
 ### Container Architecture (Kubernetes)
 
 #### EKS Cluster Configuration
+
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -195,6 +199,7 @@ data:
 ```
 
 #### Service Deployment Architecture
+
 ```yaml
 # NIL Management Service
 apiVersion: apps/v1
@@ -211,40 +216,40 @@ spec:
   template:
     spec:
       containers:
-      - name: nil-management
-        image: nil/management-service:v2.1.0
-        ports:
-        - containerPort: 8080
-        resources:
-          requests:
-            cpu: 200m
-            memory: 512Mi
-          limits:
-            cpu: 1000m
-            memory: 2Gi
-        env:
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: database-credentials
-              key: url
-        - name: REDIS_URL
-          valueFrom:
-            secretKeyRef:
-              name: redis-credentials
-              key: url
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 60
-          periodSeconds: 30
+        - name: nil-management
+          image: nil/management-service:v2.1.0
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: database-credentials
+                  key: url
+            - name: REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: redis-credentials
+                  key: url
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 30
 
 ---
 # Service Mesh Configuration (Istio)
@@ -254,18 +259,18 @@ metadata:
   name: nil-management-vs
 spec:
   http:
-  - match:
-    - uri:
-        prefix: /api/v1/nil
-    route:
-    - destination:
-        host: nil-management-service
-        port:
-          number: 8080
-    timeout: 30s
-    retries:
-      attempts: 3
-      perTryTimeout: 10s
+    - match:
+        - uri:
+            prefix: /api/v1/nil
+      route:
+        - destination:
+            host: nil-management-service
+            port:
+              number: 8080
+      timeout: 30s
+      retries:
+        attempts: 3
+        perTryTimeout: 10s
 ```
 
 ---
@@ -275,6 +280,7 @@ spec:
 ### PostgreSQL Aurora Configuration
 
 #### Primary Database Schema
+
 ```sql
 -- Athletes and Vaults
 CREATE TABLE athletes (
@@ -351,16 +357,17 @@ CREATE INDEX idx_transactions_created_at ON transactions(created_at);
 ```
 
 #### Read Replica Configuration
+
 ```yaml
 Aurora Read Replicas:
   - Region: us-east-1 (2 replicas)
     Purpose: Load balancing, analytics queries
     Instance: db.r5.xlarge
-    
-  - Region: us-west-2 (1 replica)  
+
+  - Region: us-west-2 (1 replica)
     Purpose: Disaster recovery, regional access
     Instance: db.r5.large
-    
+
   - Region: eu-west-1 (1 replica)
     Purpose: European user access, GDPR compliance
     Instance: db.r5.large
@@ -375,6 +382,7 @@ Connection Pooling:
 ### Redis Cache Architecture
 
 #### Cache Strategy
+
 ```yaml
 Redis Cluster Configuration:
   Mode: Cluster
@@ -382,27 +390,27 @@ Redis Cluster Configuration:
   Instance Type: cache.r6g.large
   Memory: 12.93 GB per node
   Network: Enhanced networking enabled
-  
+
 Cache Patterns:
   Session Storage:
     TTL: 24 hours
-    Pattern: "session:{user_id}"
-    
+    Pattern: 'session:{user_id}'
+
   API Response Cache:
     TTL: 5 minutes
-    Pattern: "api:{endpoint}:{params_hash}"
-    
+    Pattern: 'api:{endpoint}:{params_hash}'
+
   Athlete Profile Cache:
     TTL: 1 hour
-    Pattern: "athlete:{athlete_id}"
-    
+    Pattern: 'athlete:{athlete_id}'
+
   Deal Status Cache:
     TTL: 30 seconds
-    Pattern: "deal:{deal_id}:status"
-    
+    Pattern: 'deal:{deal_id}:status'
+
   Compliance Cache:
     TTL: 15 minutes
-    Pattern: "compliance:{vault_address}"
+    Pattern: 'compliance:{vault_address}'
 ```
 
 ---
@@ -412,6 +420,7 @@ Cache Patterns:
 ### Multi-Chain Deployment Strategy
 
 #### Ethereum Mainnet
+
 ```solidity
 // Production contracts on Ethereum
 Network: Mainnet (Chain ID: 1)
@@ -420,7 +429,7 @@ Deployment Addresses:
   - NILVaultFactory: 0x1234567890123456789012345678901234567890
   - ContractNFT: 0x2345678901234567890123456789012345678901
   - ComplianceRegistry: 0x3456789012345678901234567890123456789012
-  
+
 Gas Optimization:
   - Batch operations where possible
   - Use CREATE2 for deterministic addresses
@@ -429,6 +438,7 @@ Gas Optimization:
 ```
 
 #### Polygon Network
+
 ```solidity
 // High-throughput operations on Polygon
 Network: Polygon (Chain ID: 137)
@@ -445,25 +455,26 @@ Bridge Configuration:
 ```
 
 #### Smart Contract Architecture
+
 ```mermaid
 graph TB
     A[Proxy Admin] --> B[Transparent Proxy]
     B --> C[NIL Vault Implementation]
-    
+
     D[Factory Contract] --> E[Minimal Proxy Clones]
     E --> F[Individual Athlete Vaults]
-    
+
     G[Contract NFT] --> H[ERC-721 Implementation]
     H --> I[Metadata Storage]
     I --> J[IPFS Gateway]
-    
+
     K[Compliance Registry] --> L[KYC Manager]
     K --> M[AML Screener]
     K --> N[Sanctions Checker]
-    
+
     O[Revenue Splitter] --> P[Split Logic]
     P --> Q[Automatic Distribution]
-    
+
     R[Governance] --> S[Timelock Controller]
     S --> T[Multi-sig Wallet]
 ```
@@ -471,19 +482,20 @@ graph TB
 ### Blockchain Infrastructure Components
 
 #### Node Infrastructure
+
 ```yaml
 Ethereum Nodes:
   Provider: AWS Managed Blockchain / Alchemy
   Type: Archive nodes for full transaction history
   Redundancy: 3 providers (Alchemy, Infura, Moralis)
   Monitoring: Block height, sync status, response time
-  
+
 Polygon Nodes:
   Provider: Polygon Edge / QuickNode
   Type: Full nodes for recent state
   Redundancy: 2 providers
   Performance: Sub-100ms response times
-  
+
 IPFS Network:
   Provider: Pinata / Infura IPFS
   Redundancy: 3 pin services
@@ -492,6 +504,7 @@ IPFS Network:
 ```
 
 #### Smart Contract Monitoring
+
 ```yaml
 Contract Monitoring:
   Tools:
@@ -499,14 +512,14 @@ Contract Monitoring:
     - OpenZeppelin Defender: Automated security monitoring
     - Forta: Real-time threat detection
     - Custom monitors: Business logic validation
-    
+
   Alerts:
     - Failed transactions > 5%
     - Gas price spikes > 150 gwei
     - Unusual transaction patterns
     - Contract upgrade proposals
     - Emergency pause triggers
-    
+
   Metrics:
     - Transaction success rate: >99.5%
     - Average gas usage per transaction
@@ -521,19 +534,20 @@ Contract Monitoring:
 ### Multi-Layer Security Model
 
 #### Network Security
+
 ```yaml
 Perimeter Security:
   - AWS WAF with OWASP rule sets
   - DDoS protection via CloudFlare
   - Geographic blocking for restricted regions
   - Rate limiting: 1000 requests/minute per IP
-  
+
 Network Isolation:
   - Private VPC with no internet gateway
   - Bastion hosts for administrative access
   - VPN endpoints for secure remote access
   - Network segmentation between environments
-  
+
 Load Balancing:
   - Application Load Balancer with SSL termination
   - Health checks every 30 seconds
@@ -542,19 +556,20 @@ Load Balancing:
 ```
 
 #### Application Security
+
 ```yaml
 Authentication & Authorization:
   - JWT tokens with RS256 signing
   - Token expiration: 15 minutes (refresh: 7 days)
   - Role-based access control (RBAC)
   - Multi-factor authentication for admin users
-  
+
 Data Encryption:
   - TLS 1.3 for data in transit
   - AES-256 encryption for data at rest
   - Field-level encryption for PII
   - Key rotation every 90 days
-  
+
 Input Validation:
   - SQL injection protection via parameterized queries
   - XSS prevention with output encoding
@@ -563,19 +578,20 @@ Input Validation:
 ```
 
 #### Blockchain Security
+
 ```yaml
 Smart Contract Security:
   - Multi-signature wallets for admin functions
   - Timelock delays for critical changes
   - Emergency pause mechanisms
   - Upgrade governance via DAO voting
-  
+
 Private Key Management:
   - Hardware Security Modules (HSM)
   - Key derivation from secure entropy
   - Multi-party computation (MPC) for signing
   - Regular key rotation procedures
-  
+
 Transaction Security:
   - Gas price oracles to prevent front-running
   - MEV protection via Flashbots
@@ -590,6 +606,7 @@ Transaction Security:
 ### Comprehensive Monitoring Stack
 
 #### Infrastructure Monitoring
+
 ```yaml
 AWS CloudWatch:
   Metrics:
@@ -597,13 +614,13 @@ AWS CloudWatch:
     - RDS: Connections, CPU, Read/Write IOPS
     - ELB: Request count, latency, error rates
     - Lambda: Duration, errors, throttles
-    
+
   Log Groups:
     - Application logs: /aws/eks/nil-transparency/app
     - Database logs: /aws/rds/nil-transparency/postgresql
     - Load balancer logs: /aws/elb/nil-transparency
     - WAF logs: /aws/waf/nil-transparency
-    
+
   Dashboards:
     - Infrastructure overview
     - Application performance
@@ -612,10 +629,10 @@ AWS CloudWatch:
 
 Datadog Integration:
   APM: Distributed tracing across microservices
-  Infrastructure: Real-time resource monitoring  
+  Infrastructure: Real-time resource monitoring
   Logs: Centralized log aggregation and analysis
   Synthetic: Uptime and performance testing
-  
+
 Custom Metrics:
   - NIL deals processed per minute
   - Compliance check success rate
@@ -624,24 +641,25 @@ Custom Metrics:
 ```
 
 #### Application Performance Monitoring
+
 ```yaml
 Distributed Tracing:
   Tool: Jaeger with OpenTelemetry
   Sample Rate: 1% for production, 100% for staging
   Retention: 7 days for traces, 30 days for metrics
-  
+
 Performance Metrics:
   - P50/P95/P99 response times
   - Error rates by service and endpoint
   - Throughput (requests per second)
   - Database query performance
-  
+
 Business Metrics:
   - Daily/Monthly active users
   - NIL deal conversion rates
   - Revenue per transaction
   - Compliance success rates
-  
+
 Alerting:
   - P95 response time > 1 second
   - Error rate > 1%
@@ -652,18 +670,19 @@ Alerting:
 ### Incident Response & SLAs
 
 #### Service Level Objectives (SLOs)
+
 ```yaml
 Availability SLOs:
   - API availability: 99.9% (8.76 hours downtime/year)
   - Database availability: 99.95% (4.38 hours downtime/year)
   - Blockchain interaction: 99.5% (43.8 hours downtime/year)
-  
+
 Performance SLOs:
   - API response time P95: < 500ms
   - Database query time P95: < 100ms
   - Compliance check time P95: < 2 seconds
   - Deal processing time P95: < 5 minutes
-  
+
 Data SLOs:
   - Data loss: 0% (RPO = 0)
   - Data corruption: 0%
@@ -672,21 +691,22 @@ Data SLOs:
 ```
 
 #### Incident Response Procedures
+
 ```yaml
 Severity Levels:
   P0 (Critical): System down, data loss, security breach
     Response Time: 15 minutes
     Resolution Time: 4 hours
-    
+
   P1 (High): Significant feature impairment
-    Response Time: 1 hour  
+    Response Time: 1 hour
     Resolution Time: 24 hours
-    
+
   P2 (Medium): Minor feature issues
     Response Time: 4 hours
     Resolution Time: 72 hours
-    
-  P3 (Low): Cosmetic or documentation issues  
+
+  P3 (Low): Cosmetic or documentation issues
     Response Time: 24 hours
     Resolution Time: 1 week
 
@@ -704,6 +724,7 @@ On-Call Schedule:
 ### Continuous Integration/Continuous Deployment
 
 #### Source Code Management
+
 ```yaml
 Git Workflow:
   Strategy: GitFlow with feature branches
@@ -711,7 +732,7 @@ Git Workflow:
   Develop Branch: integration testing
   Feature Branches: individual development
   Release Branches: pre-production testing
-  
+
 Branch Protection:
   - Require pull request reviews (2 approvals)
   - Require status checks to pass
@@ -721,6 +742,7 @@ Branch Protection:
 ```
 
 #### Build Pipeline
+
 ```yaml
 # GitHub Actions Workflow
 name: NIL Transparency Network CI/CD
@@ -738,75 +760,75 @@ jobs:
       matrix:
         node-version: [16.x, 18.x]
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run test:unit
-    - run: npm run test:integration
-    - run: npm run test:e2e
-    
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run test:unit
+      - run: npm run test:integration
+      - run: npm run test:e2e
+
   security-scan:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Run Snyk Security Scan
-      uses: snyk/actions/node@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        
+      - uses: actions/checkout@v3
+      - name: Run Snyk Security Scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
   smart-contract-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Install Foundry
-      uses: foundry-rs/foundry-toolchain@v1
-    - name: Run contract tests
-      run: forge test
-    - name: Generate coverage report
-      run: forge coverage --report lcov
-      
+      - uses: actions/checkout@v3
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+      - name: Run contract tests
+        run: forge test
+      - name: Generate coverage report
+        run: forge coverage --report lcov
+
   build-and-push:
     needs: [test, security-scan, smart-contract-tests]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
-    - uses: actions/checkout@v3
-    - name: Build Docker images
-      run: docker build -t nil-transparency:${{ github.sha }} .
-    - name: Push to ECR
-      env:
-        AWS_REGION: us-east-1
-      run: |
-        aws ecr get-login-password | docker login --username AWS --password-stdin $ECR_REGISTRY
-        docker tag nil-transparency:${{ github.sha }} $ECR_REGISTRY/nil-transparency:${{ github.sha }}
-        docker push $ECR_REGISTRY/nil-transparency:${{ github.sha }}
-        
+      - uses: actions/checkout@v3
+      - name: Build Docker images
+        run: docker build -t nil-transparency:${{ github.sha }} .
+      - name: Push to ECR
+        env:
+          AWS_REGION: us-east-1
+        run: |
+          aws ecr get-login-password | docker login --username AWS --password-stdin $ECR_REGISTRY
+          docker tag nil-transparency:${{ github.sha }} $ECR_REGISTRY/nil-transparency:${{ github.sha }}
+          docker push $ECR_REGISTRY/nil-transparency:${{ github.sha }}
+
   deploy-staging:
     needs: build-and-push
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     steps:
-    - name: Deploy to staging
-      run: |
-        aws eks update-kubeconfig --region us-east-1 --name nil-staging-cluster
-        kubectl set image deployment/nil-management-service nil-management=$ECR_REGISTRY/nil-transparency:${{ github.sha }}
-        kubectl rollout status deployment/nil-management-service
-        
+      - name: Deploy to staging
+        run: |
+          aws eks update-kubeconfig --region us-east-1 --name nil-staging-cluster
+          kubectl set image deployment/nil-management-service nil-management=$ECR_REGISTRY/nil-transparency:${{ github.sha }}
+          kubectl rollout status deployment/nil-management-service
+
   deploy-production:
     needs: build-and-push
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     environment: production
     steps:
-    - name: Deploy to production
-      run: |
-        aws eks update-kubeconfig --region us-east-1 --name nil-prod-cluster
-        kubectl set image deployment/nil-management-service nil-management=$ECR_REGISTRY/nil-transparency:${{ github.sha }}
-        kubectl rollout status deployment/nil-management-service
+      - name: Deploy to production
+        run: |
+          aws eks update-kubeconfig --region us-east-1 --name nil-prod-cluster
+          kubectl set image deployment/nil-management-service nil-management=$ECR_REGISTRY/nil-transparency:${{ github.sha }}
+          kubectl rollout status deployment/nil-management-service
 ```
 
 ---
@@ -816,6 +838,7 @@ jobs:
 ### Auto-Scaling Configuration
 
 #### Horizontal Pod Autoscaler (HPA)
+
 ```yaml
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -829,34 +852,35 @@ spec:
   minReplicas: 3
   maxReplicas: 50
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70
-  - type: Resource
-    resource:
-      name: memory
-      target:
-        type: Utilization
-        averageUtilization: 80
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
   behavior:
     scaleUp:
       stabilizationWindowSeconds: 60
       policies:
-      - type: Percent
-        value: 100
-        periodSeconds: 15
+        - type: Percent
+          value: 100
+          periodSeconds: 15
     scaleDown:
       stabilizationWindowSeconds: 300
       policies:
-      - type: Percent
-        value: 10
-        periodSeconds: 60
+        - type: Percent
+          value: 10
+          periodSeconds: 60
 ```
 
 #### Database Scaling Strategy
+
 ```yaml
 Aurora Auto Scaling:
   Read Replicas:
@@ -865,13 +889,13 @@ Aurora Auto Scaling:
     Target CPU: 70%
     Scale-out cooldown: 300 seconds
     Scale-in cooldown: 300 seconds
-    
+
   Storage Scaling:
     Auto-scaling enabled
     Minimum: 20 GB
     Maximum: 128 TB
     Scale in 10 GB increments
-    
+
 Connection Pooling:
   Max connections per service: 25
   Pool timeout: 30 seconds
@@ -882,19 +906,20 @@ Connection Pooling:
 ### Performance Optimization
 
 #### Caching Strategy
+
 ```yaml
 Multi-Layer Caching:
   CDN (CloudFront):
     - Static assets: 365 days TTL
     - API responses: 5 minutes TTL
     - Geographic distribution: Global
-    
+
   Application Cache (Redis):
     - User sessions: 24 hours TTL
     - API responses: 5 minutes TTL
     - Database query results: 1 hour TTL
     - Configuration data: 1 day TTL
-    
+
   Database Query Cache:
     - Shared query result cache
     - Query plan cache
@@ -903,6 +928,7 @@ Multi-Layer Caching:
 ```
 
 #### Load Testing Results
+
 ```yaml
 Performance Benchmarks:
   Concurrent Users: 50,000
@@ -910,16 +936,16 @@ Performance Benchmarks:
   95th Percentile: 580ms
   99th Percentile: 1.2s
   Error Rate: 0.12%
-  
+
   Throughput:
     - API requests: 15,000 RPS
     - Database queries: 45,000 QPS
     - Cache hits: 92%
     - CDN cache hits: 89%
-    
+
   Resource Utilization:
     - CPU: 68% average
-    - Memory: 72% average  
+    - Memory: 72% average
     - Network: 2.1 Gbps peak
     - Storage IOPS: 8,500 peak
 ```
@@ -931,6 +957,7 @@ Performance Benchmarks:
 ### Environment Strategy
 
 #### Development Environment
+
 ```yaml
 Purpose: Individual developer testing
 Infrastructure: Local Docker containers
@@ -940,7 +967,8 @@ Monitoring: Basic logging
 Cost: ~$0 (local development)
 ```
 
-#### Staging Environment  
+#### Staging Environment
+
 ```yaml
 Purpose: Integration testing and QA
 Infrastructure: AWS EKS (2 nodes)
@@ -951,6 +979,7 @@ Cost: ~$2,000/month
 ```
 
 #### Production Environment
+
 ```yaml
 Purpose: Live system serving customers
 Infrastructure: AWS EKS (3+ nodes, multi-AZ)
@@ -963,19 +992,20 @@ Cost: ~$15,000/month at scale
 ### Disaster Recovery
 
 #### Backup Strategy
+
 ```yaml
 Database Backups:
   - Continuous: Point-in-time recovery (5 min RPO)
   - Daily: Automated snapshots (35 day retention)
   - Weekly: Cross-region backup
   - Monthly: Long-term archival
-  
+
 Application Backups:
   - Source code: Git repositories (GitHub, GitLab)
   - Container images: ECR with lifecycle policies
   - Configuration: Infrastructure as Code (Terraform)
   - Secrets: AWS Secrets Manager with backup
-  
+
 Blockchain Backups:
   - Smart contract source: Git repositories
   - Deployed bytecode: IPFS storage
@@ -984,12 +1014,13 @@ Blockchain Backups:
 ```
 
 #### Recovery Procedures
+
 ```yaml
 RTO/RPO Objectives:
   - Database recovery: RTO 1 hour, RPO 5 minutes
   - Application recovery: RTO 30 minutes, RPO 0
   - Full system recovery: RTO 4 hours, RPO 5 minutes
-  
+
 Recovery Testing:
   - Monthly: Backup restore testing
   - Quarterly: Full disaster recovery drill
@@ -1003,7 +1034,7 @@ This comprehensive infrastructure architecture provides the foundation for a sca
 
 ---
 
-*Architecture Document Version 2.0*  
-*Last Updated: September 7, 2025*  
-*Next Review: December 7, 2025*  
-*Maintained by: Unykorn Infrastructure Team*
+_Architecture Document Version 2.0_  
+_Last Updated: September 7, 2025_  
+_Next Review: December 7, 2025_  
+_Maintained by: Unykorn Infrastructure Team_
