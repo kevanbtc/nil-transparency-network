@@ -64,7 +64,7 @@ export class OpendorseAdapter extends EventEmitter {
   private apiKey: string;
   private webhookSecret: string;
   private nilContractAddress: string;
-  // private provider: ethers.Provider; // Currently unused
+  private provider: ethers.Provider;
   private signer: ethers.Signer;
 
   constructor(config: {
@@ -242,7 +242,7 @@ export class OpendorseAdapter extends EventEmitter {
       this.emit('dealProcessed', {
         success: false,
         opendorseDealId: deal.deal_id,
-        error: error.message
+        error: error instanceof Error ? error.message : String(error)
       });
     }
   }

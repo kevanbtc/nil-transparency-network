@@ -257,7 +257,7 @@ export class LatinAmericaSportsAdapter extends UniversalAdapterBase {
     }
 
     // Check forex restrictions
-    if (this.violatesForexRestrictions(deal)) {
+    if (await this.violatesForexRestrictions(deal)) {
       return { approved: false, reason: 'Violates foreign exchange restrictions' };
     }
 
@@ -371,7 +371,7 @@ export class LatinAmericaSportsAdapter extends UniversalAdapterBase {
     };
     
     const threshold = approvalThresholds[deal.jurisdiction];
-    return threshold && deal.amount >= threshold;
+    return threshold !== undefined && deal.amount >= threshold;
   }
 
   private async submitRegulatoryApproval(deal_id: string, deal: UniversalNILDeal): Promise<void> {
@@ -411,7 +411,7 @@ export class LatinAmericaSportsAdapter extends UniversalAdapterBase {
     return this.convertCurrency(currency, 'USD', amount, '').then(r => r.converted_amount);
   }
 
-  private violatesForexRestrictions(deal: UniversalNILDeal): boolean {
+  private async violatesForexRestrictions(deal: UniversalNILDeal): Promise<boolean> {
     const banking = this.getBankingCompliance(deal.jurisdiction);
     return banking.then((rules: any) => {
       if (rules.forex_restrictions && deal.currency === 'USD') {

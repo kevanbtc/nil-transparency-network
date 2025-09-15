@@ -4,9 +4,9 @@
  */
 
 import { ethers } from 'ethers';
-import { UniversalAdapterBase } from '../adapters/UniversalAdapter';
-import { EuropeanSportsAdapter } from '../adapters/EuropeanSportsAdapter';
-import { LatinAmericaSportsAdapter } from '../adapters/LatinAmericaSportsAdapter';
+import { UniversalAdapterBase } from '../../adapters/UniversalAdapter';
+import { EuropeanSportsAdapter } from '../../adapters/EuropeanSportsAdapter';
+import { LatinAmericaSportsAdapter } from '../../adapters/LatinAmericaSportsAdapter';
 
 // Enhanced interfaces for global support
 export interface GlobalAthleteProfile {
@@ -565,11 +565,9 @@ export class GlobalSiloCloudNIL {
       
       return {
         ...deal,
-        original_currency: deal.currency,
-        original_amount: deal.amount,
         amount: parseFloat(ethers.formatEther(conversion)),
         currency: 'USD'
-      };
+      } as GlobalNILDeal;
     }
 
     return deal;
@@ -633,6 +631,66 @@ export class GlobalSiloCloudNIL {
   // - _getReputationTrend
   // - _getDealPerformance
   // - etc.
+
+  private async _registerFundingSource(source: any): Promise<string> {
+    // Placeholder implementation
+    return `source_${Date.now()}`;
+  }
+
+  private async _getFunderJurisdiction(address: string): Promise<string> {
+    // Placeholder implementation
+    return 'US';
+  }
+
+  private async _processContributionThroughContract(...args: any[]): Promise<string> {
+    // Placeholder implementation
+    return `contribution_${Date.now()}`;
+  }
+
+  private async _getAuditTrail(contributionId: string): Promise<any[]> {
+    // Placeholder implementation
+    return [];
+  }
+
+  private async _createCollectivePoolContract(pool: any): Promise<any> {
+    // Placeholder implementation
+    return { poolId: `pool_${Date.now()}`, contractAddress: '0x0000000000000000000000000000000000000000' };
+  }
+
+  private async _processFractionalInvestmentContract(investment: any): Promise<string> {
+    // Placeholder implementation
+    return `investment_${Date.now()}`;
+  }
+
+  private async _getReputationTrend(athleteId: string, period: string): Promise<any> {
+    // Placeholder implementation
+    return { trend: 'positive', score: 85 };
+  }
+
+  private async _getDealPerformance(athleteId: string, period: string): Promise<any> {
+    // Placeholder implementation
+    return { performance: 'good', metrics: {} };
+  }
+
+  private async _getFundingSourceAnalytics(athleteId: string, period: string): Promise<any> {
+    // Placeholder implementation
+    return { analytics: {} };
+  }
+
+  private async _getEngagementMetrics(athleteId: string, period: string): Promise<any> {
+    // Placeholder implementation
+    return { engagement: {} };
+  }
+
+  private async _getGeographicReach(athleteId: string, period: string): Promise<any> {
+    // Placeholder implementation
+    return { reach: {} };
+  }
+
+  private async _submitProofOfWorkContract(proof: any): Promise<string> {
+    // Placeholder implementation
+    return `proof_${Date.now()}`;
+  }
 }
 
 export default GlobalSiloCloudNIL;

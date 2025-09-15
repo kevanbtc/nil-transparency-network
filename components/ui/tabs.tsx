@@ -1,7 +1,9 @@
 import React from 'react';
 
 interface TabsProps {
-  defaultValue: string;
+  defaultValue?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
   children: React.ReactNode;
   className?: string;
 }
@@ -23,8 +25,8 @@ interface TabsContentProps {
   className?: string;
 }
 
-export const Tabs: React.FC<TabsProps> = ({ defaultValue, children, className = '' }) => (
-  <div className={`tabs ${className}`} data-default-value={defaultValue}>
+export const Tabs: React.FC<TabsProps> = ({ defaultValue, value, onValueChange, children, className = '' }) => (
+  <div className={`tabs ${className}`} data-default-value={defaultValue} data-value={value}>
     {children}
   </div>
 );
@@ -44,3 +46,6 @@ export const TabsContent: React.FC<TabsContentProps> = ({ value, children, class
     {children}
   </div>
 );
+
+// Alias for backward compatibility
+export const TabsToken = TabsTrigger;
