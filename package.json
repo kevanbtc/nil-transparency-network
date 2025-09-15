@@ -12,10 +12,13 @@
     "lint": "eslint . --ext .ts,.js",
     "lint:fix": "eslint . --ext .ts,.js --fix",
     "dev": "ts-node apps/silo-integration/SiloCloudNIL.ts",
-    "deploy": "hardhat deploy",
+    "deploy": "hardhat run scripts/deploy.ts",
+    "deploy:local": "hardhat run scripts/deploy.ts --network localhost",
     "start": "node dist/index.js",
-    "clean": "rm -rf dist/ cache/ artifacts/",
-    "typecheck": "tsc --noEmit"
+    "start:node": "hardhat node",
+    "clean": "rm -rf dist/ cache/ artifacts/ typechain-types/",
+    "typecheck": "tsc --noEmit",
+    "setup": "npm install && npm run build && npm run build:contracts"
   },
   "keywords": [
     "nil",
@@ -42,8 +45,8 @@
     "@typechain/hardhat": "^8.0.3",
     "@types/jest": "^29.5.14",
     "@types/node": "^20.10.0",
-    "@typescript-eslint/eslint-plugin": "^6.12.0",
-    "@typescript-eslint/parser": "^6.12.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "chai": "^4.3.10",
     "eslint": "^8.54.0",
     "hardhat": "^2.19.1",

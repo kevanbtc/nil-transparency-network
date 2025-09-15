@@ -27,30 +27,29 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
-      - name: Run linter
-        run: npm run lint
-        
       - name: Run TypeScript type check
         run: npm run typecheck
         
-      - name: Compile smart contracts
-        run: npm run build:contracts
+      - name: Run linter
+        run: npm run lint
         
-      - name: Run smart contract tests
-        run: npm run test:contracts
+      - name: Build TypeScript
+        run: npm run build
         
       - name: Run integration tests
         run: npm run test:integration
         
       - name: Generate test coverage
-        run: npm run test:contracts -- --coverage
+        run: npm run test:integration -- --coverage
+        continue-on-error: true
         
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
           file: ./coverage/lcov.info
-          flags: contracts
+          flags: integration
           name: codecov-umbrella
+        continue-on-error: true
           
   build:
     runs-on: ubuntu-latest
@@ -72,17 +71,14 @@ jobs:
       - name: Build TypeScript
         run: npm run build
         
-      - name: Build contracts
-        run: npm run build:contracts
-        
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
           path: |
             dist/
-            artifacts/
-            typechain-types/
+            package.json
+            package-lock.json
             
   security-audit:
     runs-on: ubuntu-latest

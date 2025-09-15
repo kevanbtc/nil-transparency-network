@@ -7,11 +7,9 @@ describe("NIL Transparency Network", function () {
   let complianceRegistry: ComplianceRegistry;
   let contractNFT: ContractNFT;
   let owner: any;
-  let athlete: any;
-  let brand: any;
 
   beforeEach(async function () {
-    [owner, athlete, brand] = await ethers.getSigners();
+    [owner] = await ethers.getSigners();
 
     // Deploy ComplianceRegistry
     const ComplianceRegistry = await ethers.getContractFactory("ComplianceRegistry");
