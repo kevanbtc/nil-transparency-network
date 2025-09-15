@@ -80,7 +80,7 @@ export class OpendorseAdapter extends EventEmitter {
     this.apiKey = config.apiKey;
     this.webhookSecret = config.webhookSecret;
     this.nilContractAddress = config.nilContractAddress;
-    this.provider = config.provider;
+    // this.provider = config.provider; // Currently unused
     this.signer = config.signer;
   }
 
@@ -201,7 +201,7 @@ export class OpendorseAdapter extends EventEmitter {
       );
 
       const receipt = await tx.wait();
-      const dealCreatedEvent = receipt.events?.find(e => e.event === 'NILDealCreated');
+      const dealCreatedEvent = receipt.events?.find((e: any) => e.event === 'NILDealCreated');
       const transparencyDealId = dealCreatedEvent?.args?.dealId;
 
       // Store mapping between Opendorse deal ID and transparency deal ID
@@ -242,7 +242,7 @@ export class OpendorseAdapter extends EventEmitter {
       this.emit('dealProcessed', {
         success: false,
         opendorseDealId: deal.deal_id,
-        error: error.message
+        error: error instanceof Error ? error.message : String(error)
       });
     }
   }
@@ -326,18 +326,18 @@ export class OpendorseAdapter extends EventEmitter {
     }
   }
 
-  private async _getAthleteVault(athleteId: string): Promise<string> {
+  private async _getAthleteVault(_athleteId: string): Promise<string> {
     // Implementation would lookup athlete's vault address from database
     // For now, return a placeholder
     return `0x${'0'.repeat(40)}`; // Placeholder vault address
   }
 
-  private async _getSchoolAddress(athleteId: string): Promise<string> {
+  private async _getSchoolAddress(_athleteId: string): Promise<string> {
     // Implementation would lookup school's wallet address
     return `0x${'1'.repeat(40)}`; // Placeholder school address
   }
 
-  private async _getCollectiveAddress(athleteId: string): Promise<string> {
+  private async _getCollectiveAddress(_athleteId: string): Promise<string> {
     // Implementation would lookup collective's wallet address
     return `0x${'2'.repeat(40)}`; // Placeholder collective address
   }
@@ -347,7 +347,7 @@ export class OpendorseAdapter extends EventEmitter {
     console.log(`Mapping stored: ${opendorseDealId} -> ${transparencyDealId}`);
   }
 
-  private async _getTransparencyDealId(opendorseDealId: string): Promise<string | null> {
+  private async _getTransparencyDealId(_opendorseDealId: string): Promise<string | null> {
     // Retrieve transparency deal ID from stored mapping
     return null; // Placeholder implementation
   }

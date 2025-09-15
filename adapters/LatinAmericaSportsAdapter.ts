@@ -257,7 +257,7 @@ export class LatinAmericaSportsAdapter extends UniversalAdapterBase {
     }
 
     // Check forex restrictions
-    if (this.violatesForexRestrictions(deal)) {
+    if (await this.violatesForexRestrictions(deal)) {
       return { approved: false, reason: 'Violates foreign exchange restrictions' };
     }
 
@@ -355,7 +355,7 @@ export class LatinAmericaSportsAdapter extends UniversalAdapterBase {
     };
   }
 
-  private async performAntiCorruptionChecks(deal: UniversalNILDeal): Promise<{ clean: boolean; risk_level: string }> {
+  private async performAntiCorruptionChecks(_deal: UniversalNILDeal): Promise<{ clean: boolean; risk_level: string }> {
     // Check against local and international corruption databases
     // This would integrate with services like World-Check, Dow Jones, etc.
     
@@ -371,7 +371,7 @@ export class LatinAmericaSportsAdapter extends UniversalAdapterBase {
     };
     
     const threshold = approvalThresholds[deal.jurisdiction];
-    return threshold && deal.amount >= threshold;
+    return Boolean(threshold) && deal.amount >= (threshold || 0);
   }
 
   private async submitRegulatoryApproval(deal_id: string, deal: UniversalNILDeal): Promise<void> {
@@ -411,17 +411,15 @@ export class LatinAmericaSportsAdapter extends UniversalAdapterBase {
     return this.convertCurrency(currency, 'USD', amount, '').then(r => r.converted_amount);
   }
 
-  private violatesForexRestrictions(deal: UniversalNILDeal): boolean {
-    const banking = this.getBankingCompliance(deal.jurisdiction);
-    return banking.then((rules: any) => {
-      if (rules.forex_restrictions && deal.currency === 'USD') {
-        return deal.amount > rules.max_remittance_usd;
-      }
-      return false;
-    });
+  private async violatesForexRestrictions(deal: UniversalNILDeal): Promise<boolean> {
+    const banking = await this.getBankingCompliance(deal.jurisdiction);
+    if (banking.forex_restrictions && deal.currency === 'USD') {
+      return deal.amount > banking.max_remittance_usd;
+    }
+    return false;
   }
 
-  private async checkLocalTaxCompliance(deal: UniversalNILDeal): Promise<{ compliant: boolean }> {
+  private async checkLocalTaxCompliance(_deal: UniversalNILDeal): Promise<{ compliant: boolean }> {
     // Would check against local tax authority requirements
     return { compliant: true }; // Placeholder
   }
@@ -441,7 +439,7 @@ export class LatinAmericaSportsAdapter extends UniversalAdapterBase {
     return requirements[jurisdiction] || ['contract_details'];
   }
 
-  private getRegulatoryDocuments(deal: UniversalNILDeal): string[] {
+  private getRegulatoryDocuments(_deal: UniversalNILDeal): string[] {
     return [
       'athlete_eligibility_certificate',
       'nil_contract_terms',

@@ -575,7 +575,7 @@ export class GlobalSiloCloudNIL {
     return deal;
   }
 
-  private async _createEnhancedDeal(deal: GlobalNILDeal): Promise<string> {
+  private async _createEnhancedDeal(_deal: GlobalNILDeal): Promise<string> {
     // Implementation would create deal through enhanced vault
     return `deal_${Date.now()}`;
   }

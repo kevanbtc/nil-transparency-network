@@ -203,7 +203,7 @@ export class EuropeanSportsAdapter extends UniversalAdapterBase {
     };
   }
 
-  private identifyGDPRDataCategories(deal: UniversalNILDeal): string[] {
+  private identifyGDPRDataCategories(_deal: UniversalNILDeal): string[] {
     // Identify what types of personal data are processed
     return [
       'identity_data',
@@ -260,7 +260,7 @@ export class EuropeanSportsAdapter extends UniversalAdapterBase {
     };
   }
 
-  private getCrossBorderRestrictions(jurisdiction: string): {
+  private getCrossBorderRestrictions(_jurisdiction: string): {
     restricted_countries: string[];
     adequacy_decision_required: boolean;
     standard_contractual_clauses: boolean;
@@ -277,22 +277,22 @@ export class EuropeanSportsAdapter extends UniversalAdapterBase {
     return deal.amount > 50000; // Simplified threshold
   }
 
-  private async checkMiFIDCompliance(deal: UniversalNILDeal): Promise<{ approved: boolean; reason?: string }> {
+  private async checkMiFIDCompliance(_deal: UniversalNILDeal): Promise<{ approved: boolean; reason?: string }> {
     // Implementation would check MiFID II requirements
     return { approved: true };
   }
 
-  private isPSD2Applicable(deal: UniversalNILDeal): boolean {
+  private isPSD2Applicable(_deal: UniversalNILDeal): boolean {
     // PSD2 applies to payment services in EU
     return true; // All deals involve payments
   }
 
-  private async checkPSD2Compliance(deal: UniversalNILDeal): Promise<{ approved: boolean; reason?: string }> {
+  private async checkPSD2Compliance(_deal: UniversalNILDeal): Promise<{ approved: boolean; reason?: string }> {
     // Implementation would check PSD2 requirements
     return { approved: true };
   }
 
-  private async checkEUAMLCompliance(deal: UniversalNILDeal): Promise<{ approved: boolean; reason?: string }> {
+  private async checkEUAMLCompliance(_deal: UniversalNILDeal): Promise<{ approved: boolean; reason?: string }> {
     // Implementation would check EU Anti-Money Laundering Directive requirements
     return { approved: true };
   }
