@@ -454,7 +454,7 @@ export class INFLCRAdapter extends EventEmitter {
     }
   }
 
-  private async _getAthleteVault(athleteId: string): Promise<string> {
+  private async _getAthleteVault(_athleteId: string): Promise<string> {
     // Implementation would lookup athlete's vault address from database
     return `0x${'0'.repeat(40)}`; // Placeholder vault address
   }

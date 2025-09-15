@@ -173,7 +173,7 @@ export abstract class UniversalAdapterBase implements IUniversalAdapter {
   protected async makeApiCall(method: string, endpoint: string, data?: any): Promise<any> {
     const url = `${this.apiConfig.baseUrl}${endpoint}`;
     
-    const options: RequestInit = {
+    const options: any = {
       method,
       headers: {
         'Authorization': `Bearer ${this.apiConfig.apiKey}`,
@@ -328,7 +328,7 @@ export abstract class UniversalAdapterBase implements IUniversalAdapter {
     return response.webhook_id;
   }
 
-  validateWebhookSignature(payload: string, signature: string): boolean {
+  validateWebhookSignature(_payload: string, _signature: string): boolean {
     // Implementation would verify webhook signature using platform's signing key
     // This is a placeholder
     return true;

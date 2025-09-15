@@ -355,7 +355,7 @@ export class LatinAmericaSportsAdapter extends UniversalAdapterBase {
     };
   }
 
-  private async performAntiCorruptionChecks(deal: UniversalNILDeal): Promise<{ clean: boolean; risk_level: string }> {
+  private async performAntiCorruptionChecks(_deal: UniversalNILDeal): Promise<{ clean: boolean; risk_level: string }> {
     // Check against local and international corruption databases
     // This would integrate with services like World-Check, Dow Jones, etc.
     
@@ -421,7 +421,7 @@ export class LatinAmericaSportsAdapter extends UniversalAdapterBase {
     });
   }
 
-  private async checkLocalTaxCompliance(deal: UniversalNILDeal): Promise<{ compliant: boolean }> {
+  private async checkLocalTaxCompliance(_deal: UniversalNILDeal): Promise<{ compliant: boolean }> {
     // Would check against local tax authority requirements
     return { compliant: true }; // Placeholder
   }
@@ -441,7 +441,7 @@ export class LatinAmericaSportsAdapter extends UniversalAdapterBase {
     return requirements[jurisdiction] || ['contract_details'];
   }
 
-  private getRegulatoryDocuments(deal: UniversalNILDeal): string[] {
+  private getRegulatoryDocuments(_deal: UniversalNILDeal): string[] {
     return [
       'athlete_eligibility_certificate',
       'nil_contract_terms',
