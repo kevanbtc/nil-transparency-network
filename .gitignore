@@ -64,6 +64,10 @@ coverage/
 tmp/
 temp/
 
+# Testing and validation files
+docs/mermaid-validation.html
+*.test.html
+
 # Solidity compilation artifacts
 artifacts/
 cache/
