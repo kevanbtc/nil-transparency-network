@@ -466,6 +466,31 @@ npm run start:dashboards
 
 ---
 
+## 🔄 System Flow Overview
+
+The NIL Transparency Network processes deals through a comprehensive flow ensuring transparency and compliance:
+
+```mermaid
+flowchart LR
+    A[Opendorse Deal] --> B[SiloCloud Adapter]
+    B --> C[NILVault Contract]
+    C --> D[Compliance Registry]  
+    D --> E[All Dashboards]
+    E --> F[Payment Execution]
+    F --> G[Revenue Distribution]
+    G --> H[Updated Balances]
+    
+    style A fill:#e3f2fd
+    style C fill:#e8f5e8
+    style D fill:#fff3e0
+    style F fill:#f9f9f9
+    style H fill:#c8e6c9
+```
+
+For detailed system flow documentation, see: [Complete System Flow Diagram](docs/SYSTEM_FLOW_DIAGRAM.md)
+
+---
+
 **🏗️ Building the infrastructure everyone needs, together.**
 
 *Extends your existing .nil PoW Ladder Protocol with enterprise-grade transparency and universal platform compatibility.*
