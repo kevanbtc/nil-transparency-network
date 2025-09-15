@@ -25,7 +25,12 @@
     "noUncheckedIndexedAccess": false,
     "moduleResolution": "node",
     "jsx": "react-jsx",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["*"],
+      "@/components/*": ["components/*"]
+    }
   },
   "include": [
     "contracts/**/*",
@@ -33,7 +38,8 @@
     "adapters/**/*",
     "docs/**/*.ts",
     "src/**/*",
-    "test/**/*"
+    "test/**/*",
+    "components/**/*"
   ],
   "exclude": [
     "node_modules",
