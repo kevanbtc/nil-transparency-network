@@ -1,0 +1,61 @@
+{
+  "name": "NIL Transparency Network Development",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.vscode-typescript-next",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-json",
+        "bradlc.vscode-tailwindcss",
+        "formulahendry.auto-rename-tag",
+        "ms-vscode.vscode-eslint",
+        "JuanBlanco.solidity",
+        "NomicFoundation.hardhat-solidity",
+        "tintinweb.solidity-visual-auditor",
+        "ms-dotnettools.vscode-dotnet-runtime"
+      ],
+      "settings": {
+        "typescript.preferences.quoteStyle": "single",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": true
+        },
+        "files.associations": {
+          "*.sol": "solidity"
+        },
+        "solidity.compileUsingRemoteVersion": "v0.8.19+commit.7dd6d404",
+        "solidity.defaultCompiler": "remote"
+      }
+    }
+  },
+
+  "forwardPorts": [3000, 8545, 8080],
+  
+  "postCreateCommand": "npm install",
+
+  "postStartCommand": "npm run build",
+
+  "remoteUser": "node",
+
+  "mounts": [
+    "source=${localWorkspaceFolder}/.devcontainer/bashrc.override.sh,target=/home/node/.bashrc.override,type=bind,consistency=cached"
+  ],
+
+  "containerEnv": {
+    "NODE_ENV": "development",
+    "HARDHAT_NETWORK": "localhost"
+  },
+
+  "otherPortsAttributes": {
+    "onAutoForward": "notify"
+  }
+}

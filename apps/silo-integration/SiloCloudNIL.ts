@@ -72,11 +72,9 @@ export interface SiloTransaction {
 
 // Main SiloCloud NIL Integration Class
 export class SiloCloudNIL {
-  private provider: ethers.Provider;
   private signer: ethers.Signer;
   private nilVaultAddress: string;
   private contractNFTAddress: string;
-  private complianceRegistryAddress: string;
   private apiBaseUrl: string;
   private apiKey: string;
 
@@ -93,11 +91,9 @@ export class SiloCloudNIL {
       apiKey: string;
     };
   }) {
-    this.provider = config.provider;
     this.signer = config.signer;
     this.nilVaultAddress = config.contractAddresses.nilVault;
     this.contractNFTAddress = config.contractAddresses.contractNFT;
-    this.complianceRegistryAddress = config.contractAddresses.complianceRegistry;
     this.apiBaseUrl = config.siloCloudConfig.apiBaseUrl;
     this.apiKey = config.siloCloudConfig.apiKey;
   }
@@ -110,7 +106,7 @@ export class SiloCloudNIL {
       const tx = await vaultFactory.deployVault(profile.id, profile.name);
       const receipt = await tx.wait();
       
-      const vaultAddress = receipt.events?.find(e => e.event === 'VaultDeployed')?.args?.vault;
+      const vaultAddress = receipt.events?.find((e: any) => e.event === 'VaultDeployed')?.args?.vault;
       
       // Register in SiloCloud
       await this._apiCall('POST', '/athletes/register', {
@@ -284,7 +280,7 @@ export class SiloCloudNIL {
     );
 
     const receipt = await tx.wait();
-    const dealId = receipt.events?.find(e => e.event === 'NILDealCreated')?.args?.dealId;
+    const dealId = receipt.events?.find((e: any) => e.event === 'NILDealCreated')?.args?.dealId;
 
     // Store in SiloCloud database
     await this._apiCall('POST', '/deals/create', {
