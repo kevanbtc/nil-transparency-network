@@ -8,7 +8,7 @@ import { rateLimiter } from './middleware/rateLimiter';
 import { authentication } from './middleware/authentication';
 import { requestLogger } from './middleware/requestLogger';
 
-// Route imports
+// Route imports  
 import { athleteRoutes } from './api/routes/athletes';
 import { dealRoutes } from './api/routes/deals';
 import { complianceRoutes } from './api/routes/compliance';
