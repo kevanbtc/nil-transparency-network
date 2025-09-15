@@ -1,0 +1,132 @@
+version: '3.8'
+
+services:
+  # Database
+  postgres:
+    image: postgres:14
+    container_name: nil-postgres
+    environment:
+      POSTGRES_DB: nil_transparency_db
+      POSTGRES_USER: nil_user
+      POSTGRES_PASSWORD: nil_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - nil-network
+
+  # Redis Cache
+  redis:
+    image: redis:7
+    container_name: nil-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - nil-network
+
+  # API Server
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    container_name: nil-api
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://nil_user:nil_password@postgres:5432/nil_transparency_db
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./src:/app/src
+      - ./package.json:/app/package.json
+      - ./tsconfig.json:/app/tsconfig.json
+    networks:
+      - nil-network
+
+  # Frontend Dashboard
+  dashboard:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dashboard
+    container_name: nil-dashboard
+    ports:
+      - "3001:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:3000/api/v1
+    volumes:
+      - ./packages/dashboard/src:/app/src
+      - ./packages/dashboard/public:/app/public
+    networks:
+      - nil-network
+
+  # Hardhat Node (for local blockchain development)
+  hardhat:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.hardhat
+    container_name: nil-hardhat
+    ports:
+      - "8545:8545"
+    volumes:
+      - ./contracts:/app/contracts
+      - ./test:/app/test
+      - ./scripts:/app/scripts
+    networks:
+      - nil-network
+
+  # IPFS Node
+  ipfs:
+    image: ipfs/kubo:latest
+    container_name: nil-ipfs
+    ports:
+      - "5001:5001"
+      - "8080:8080"
+    volumes:
+      - ipfs_data:/data/ipfs
+    networks:
+      - nil-network
+
+  # Monitoring - Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: nil-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - nil-network
+
+  # Monitoring - Grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: nil-grafana
+    ports:
+      - "3002:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - nil-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  ipfs_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  nil-network:
+    driver: bridge
