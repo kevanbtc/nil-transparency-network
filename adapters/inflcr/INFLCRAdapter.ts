@@ -88,7 +88,7 @@ export class INFLCRAdapter extends EventEmitter {
   private apiKey: string;
   private nilContractAddress: string;
   private rewardContractAddress: string;
-  // private provider: ethers.Provider; // Currently unused
+  private provider: ethers.Provider;
   private signer: ethers.Signer;
 
   // Reward calculation parameters

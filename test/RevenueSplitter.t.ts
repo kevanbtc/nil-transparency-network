@@ -1,11 +1,9 @@
 import { expect } from "chai";
-import { ethers } from "hardhat";
 
 describe("RevenueSplitter", () => {
   it("splits funds deterministically", async () => {
-    const [owner, a1, a2] = await ethers.getSigners();
-    
     // This is a placeholder test - actual RevenueSplitter contract would need to be deployed
+    // const [owner, a1, a2] = await ethers.getSigners();
     // const Split = await ethers.getContractFactory("RevenueSplitter");
     // const split = await Split.deploy([a1.address, a2.address], [7000, 3000]); // bps
     // await split.deployed();

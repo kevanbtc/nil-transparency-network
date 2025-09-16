@@ -5,16 +5,18 @@ interface ButtonProps {
   className?: string;
   onClick?: () => void;
   variant?: 'default' | 'outline';
+  size?: string;
 }
 
 export const Button: React.FC<ButtonProps> = ({ 
   children, 
   className = '', 
   onClick,
-  variant = 'default'
+  variant = 'default',
+  size
 }) => (
   <button 
-    className={`button ${variant} ${className}`} 
+    className={`button ${variant} ${size ? `size-${size}` : ''} ${className}`} 
     onClick={onClick}
   >
     {children}

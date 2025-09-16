@@ -323,11 +323,11 @@ export const UniversityPortal: React.FC = () => {
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
               <span>This Month</span>
-              <span>${(universityData?.totalNILVolume * (universityData?.revenueShare || 0) / 100 / 12).toLocaleString() || 0}</span>
+              <span>${((universityData?.totalNILVolume || 0) * (universityData?.revenueShare || 0) / 100 / 12).toLocaleString()}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span>This Year</span>
-              <span>${(universityData?.totalNILVolume * (universityData?.revenueShare || 0) / 100).toLocaleString() || 0}</span>
+              <span>${((universityData?.totalNILVolume || 0) * (universityData?.revenueShare || 0) / 100).toLocaleString()}</span>
             </div>
           </div>
         </CardContent>
